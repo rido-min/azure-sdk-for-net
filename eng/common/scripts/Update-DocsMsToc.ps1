@@ -118,7 +118,11 @@ $metadata = (Get-CSVMetadata).Where({
       -and $onboardedPackages.ContainsKey($_.Package) `
       -and $_.Hide -ne 'true'
   })
-
+# The function is for languaged specified needs of filtering. 
+# E.g. Java has to filter out group id on csv metadata.
+if(Test-Path "Function:$FilteredCSVMetadataFn") {
+  $metadata = &$FilteredCSVMetadataFn $metadata
+}
 $fileMetadata = @()
 foreach ($metadataFile in Get-ChildItem "$DocRepoLocation/metadata/*/*.json" -Recurse) {
   $fileContent = Get-Content $metadataFile -Raw
