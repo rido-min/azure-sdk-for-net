@@ -113,16 +113,17 @@ $onboardedPackages = &$GetOnboardedDocsMsPackagesFn `
 # because we need to generate ToCs for packages which are not necessarily "New"
 # in the metadata AND onboard legacy packages (which `Update-DocsMsPackages.ps1`
 # does not do)
-$metadata = (Get-CSVMetadata).Where({
-    $_.Package `
-      -and $onboardedPackages.ContainsKey($_.Package) `
-      -and $_.Hide -ne 'true'
-  })
-# The function is for languaged specified needs of filtering. 
-# E.g. Java has to filter out group id on csv metadata.
-if(Test-Path "Function:$FilteredCSVMetadataFn") {
-  $metadata = &$FilteredCSVMetadataFn $metadata
+$fullMetadata = Get-CSVMetadata
+$metadata = @()
+foreach($metadataEntry in $fullMetadata) {
+  if ($metadataEntry.Package -and $metadataEntry.Hide -ne 'true') {
+    $pkgKey = GetPackageKey $metadataEntry
+    if($onboardedPackages.ContainsKey($pkgKey)) {
+      $metadata = @($metadataEntry)
+    }
+  }
 }
+
 $fileMetadata = @()
 foreach ($metadataFile in Get-ChildItem "$DocRepoLocation/metadata/*/*.json" -Recurse) {
   $fileContent = Get-Content $metadataFile -Raw
