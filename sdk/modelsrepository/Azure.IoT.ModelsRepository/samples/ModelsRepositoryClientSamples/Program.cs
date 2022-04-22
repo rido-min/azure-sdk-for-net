@@ -18,6 +18,8 @@ namespace Azure.IoT.ModelsRepository.Samples
                     Console.WriteLine("[{0:HH:mm:ss:fff}][{1}] {2}", DateTimeOffset.Now, e.Level, message),
                 level: EventLevel.Verbose);
 
+            await CustomClientOptionsSamples.ConfigureCustomUserAgent();
+
             // Client init samples
             GetModelSamples.ClientInitialization();
 

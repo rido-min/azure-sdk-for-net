@@ -49,5 +49,18 @@ namespace Azure.IoT.ModelsRepository
             Version = version;
             RepositoryMetadata = new ModelsRepositoryClientMetadataOptions();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelsRepositoryClientOptions"/> class with user agent.
+        /// </summary>
+        /// <param name="userAgent">Custom User Agent </param>
+#pragma warning disable AZC0009 // ClientOptions constructors should take a ServiceVersion as their first parameter
+        public ModelsRepositoryClientOptions(string userAgent)
+#pragma warning restore AZC0009 // ClientOptions constructors should take a ServiceVersion as their first parameter
+        {
+            Version = LatestVersion;
+            RepositoryMetadata = new ModelsRepositoryClientMetadataOptions();
+            this.AddPolicy(new CustomUserAgentHttpPolicy(userAgent), HttpPipelinePosition.PerCall);
+        }
     }
 }
