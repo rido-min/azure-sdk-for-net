@@ -56,7 +56,7 @@ namespace Azure.IoT.ModelsRepository.Tests
         {
             if (options == null)
             {
-                options = new ModelsRepositoryClientOptions();
+                options = new ModelsRepositoryClientOptions() { UserAgent = "dmr-sdk-tests" };
             }
 
             if (string.IsNullOrEmpty(repositoryLocation))

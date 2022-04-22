@@ -56,6 +56,8 @@ namespace Azure.IoT.ModelsRepository.Tests
 
             // Ensure MetadataOptions properties are settable
             defaultOptions.RepositoryMetadata.IsMetadataProcessingEnabled = false;
+
+            defaultOptions.UserAgent.Should().BeEmpty();
         }
     }
 }
