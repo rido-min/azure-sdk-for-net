@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Azure.Core;
 
 namespace Azure.IoT.ModelsRepository
@@ -37,6 +38,16 @@ namespace Azure.IoT.ModelsRepository
         /// </summary>
         public ModelsRepositoryClientMetadataOptions RepositoryMetadata { get; }
 
+        private string _userAgent = string.Empty;
+        /// <summary>
+        /// Http UserAgent header
+        /// </summary>
+        public string UserAgent
+        {
+            get => _userAgent;
+            set => AddPolicy(new CustomUserAgentHttpPolicy(_userAgent=value), HttpPipelinePosition.PerCall);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelsRepositoryClientOptions"/> class with default options.
         /// </summary>
@@ -48,19 +59,6 @@ namespace Azure.IoT.ModelsRepository
         {
             Version = version;
             RepositoryMetadata = new ModelsRepositoryClientMetadataOptions();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModelsRepositoryClientOptions"/> class with user agent.
-        /// </summary>
-        /// <param name="userAgent">Custom User Agent </param>
-#pragma warning disable AZC0009 // ClientOptions constructors should take a ServiceVersion as their first parameter
-        public ModelsRepositoryClientOptions(string userAgent)
-#pragma warning restore AZC0009 // ClientOptions constructors should take a ServiceVersion as their first parameter
-        {
-            Version = LatestVersion;
-            RepositoryMetadata = new ModelsRepositoryClientMetadataOptions();
-            this.AddPolicy(new CustomUserAgentHttpPolicy(userAgent), HttpPipelinePosition.PerCall);
         }
     }
 }

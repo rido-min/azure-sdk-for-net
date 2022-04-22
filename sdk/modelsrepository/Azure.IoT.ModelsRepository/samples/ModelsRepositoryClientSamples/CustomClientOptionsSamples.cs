@@ -13,7 +13,7 @@ namespace Azure.IoT.ModelsRepository.Samples
         public static async Task ConfigureCustomUserAgent()
         {
             var client = new ModelsRepositoryClient(
-                new ModelsRepositoryClientOptions(userAgent: "SampleUA/1.1"));
+                new ModelsRepositoryClientOptions() { UserAgent = "SampleUA / 1.1" });
             
             var dtmi = "dtmi:via:Driverecorder;2";
             ModelResult result =  await client.GetModelAsync(dtmi);
