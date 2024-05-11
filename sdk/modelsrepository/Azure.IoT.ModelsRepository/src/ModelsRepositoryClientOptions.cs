@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Azure.Core;
 
 namespace Azure.IoT.ModelsRepository
@@ -36,6 +37,16 @@ namespace Azure.IoT.ModelsRepository
         /// Gets the <see cref="ModelsRepositoryClientMetadataOptions"/> configuring interaction with models repository metadata.
         /// </summary>
         public ModelsRepositoryClientMetadataOptions RepositoryMetadata { get; }
+
+        private string _userAgent = string.Empty;
+        /// <summary>
+        /// Http UserAgent header
+        /// </summary>
+        public string UserAgent
+        {
+            get => _userAgent;
+            set => AddPolicy(new CustomUserAgentHttpPolicy(_userAgent=value), HttpPipelinePosition.PerCall);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelsRepositoryClientOptions"/> class with default options.
